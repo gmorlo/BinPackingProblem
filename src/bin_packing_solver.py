@@ -20,3 +20,11 @@ def first_fit(
             bin_list.append(new_bin)
 
     return bin_list
+
+def solve_bin_packing(method: str, 
+                      bin_capacity: int, 
+                      item_list: List) -> list[Bin]:
+    if method == 'first_fit':
+        return first_fit(bin_capacity, item_list)
+    else:
+        raise ValueError(f'Unknown method: {method}')
