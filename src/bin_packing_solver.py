@@ -21,10 +21,20 @@ def first_fit(
 
     return bin_list
 
+def first_fit_decreasing(
+        bin_capacity: int,
+        item_list: List,
+):
+    item_list.sort(reverse=True)
+
+    return first_fit(bin_capacity, item_list)
+
 def solve_bin_packing(method: str, 
                       bin_capacity: int, 
                       item_list: List) -> list[Bin]:
     if method == 'first_fit':
         return first_fit(bin_capacity, item_list)
+    elif method == 'first_fit_decreasing':
+        return first_fit_decreasing(bin_capacity, item_list)
     else:
         raise ValueError(f'Unknown method: {method}')
