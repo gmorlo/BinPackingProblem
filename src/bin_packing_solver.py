@@ -29,6 +29,23 @@ def first_fit_decreasing(
 
     return first_fit(bin_capacity, item_list)
 
+def full_bin_packing(bin_capacity: int, item_list: List[int]):
+    bin_list = []
+    item_list.sort(reverse=True)
+
+    while item_list:
+        new_bin = Bin(bin_capacity=bin_capacity)
+        remaining_items = []
+
+        for item in item_list:
+            if not new_bin.add_item(item):
+                remaining_items.append(item)
+
+        bin_list.append(new_bin)
+        item_list = remaining_items
+
+    return bin_list
+
 def solve_bin_packing(method: str, 
                       bin_capacity: int, 
                       item_list: List) -> list[Bin]:
@@ -36,5 +53,7 @@ def solve_bin_packing(method: str,
         return first_fit(bin_capacity, item_list)
     elif method == 'first_fit_decreasing':
         return first_fit_decreasing(bin_capacity, item_list)
+    elif method == 'full_bin_packing':
+        return full_bin_packing(bin_capacity, item_list)
     else:
         raise ValueError(f'Unknown method: {method}')
