@@ -56,5 +56,7 @@ def solve_bin_packing(method: str,
         return first_fit_decreasing(bin_capacity, item_list)
     elif method == 'full_bin_packing':
         return full_bin_packing(bin_capacity, item_list)
+    elif method == 'generate_random_solution':
+        return generate_random_solution(bin_capacity, item_list)
     else:
         raise ValueError(f'Unknown method: {method}')
