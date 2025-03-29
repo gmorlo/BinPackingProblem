@@ -1,7 +1,7 @@
 import argparse
 from typing import Dict, List
-from utils import test_solver
-import json
+from utils import load_data_from_file
+from objective_evaluate import test_solver
 
 def parse_command_line_arguments() -> Dict:
     parser = argparse.ArgumentParser(description="Simple CLI for bin packing problem")
@@ -40,11 +40,6 @@ def parse_command_line_arguments() -> Dict:
     )
     args = parser.parse_args()
     return vars(args)
-
-def load_data_from_file(filepath: str) -> List[int]:
-    with open(filepath, "r") as f:
-        data = json.load(f)
-    return data["items"]
 
 def main():
 
