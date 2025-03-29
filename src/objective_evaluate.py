@@ -2,9 +2,20 @@ from bin_packing_solver import *
 from typing import List, Tuple
 import timer
 from plots import plot_bins
+from bin import Bin
 
 timer = timer.Timer()
-def objective_function(bins: list[Bin]) -> Tuple[int, int]:
+
+def evaluate_solution(bins: List[Bin]) -> float:
+    total_bins = len(bins)
+    total_free_space = sum(bin.free_bin_capacity for bin in bins)
+
+    penalty_factor = 0.05
+    score = total_bins + penalty_factor * total_free_space
+
+    return score
+
+def count_bins(bins: list[Bin]):
     full_bins = 0
     not_full_bins = 0
 
@@ -31,9 +42,11 @@ def test_solver(method: str,
     if display_bins_mode:
         display_bins(bins)
     if count_bins_mode:
-        full_bins, not_full_bins = objective_function(bins)
+        full_bins, not_full_bins = count_bins(bins)
         print(f"Full bins: {full_bins}, Not full bins: {not_full_bins}")
     if visualize:
         plot_bins(bins, title=f"Method: {method}, Capacity: {bin_capacity}")
 
+    score = evaluate_solution(bins)
+    print(f"Score: {score}")
     timer.stop()
