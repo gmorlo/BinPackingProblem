@@ -1,10 +1,8 @@
 from typing import Dict, List, Tuple
 from bin import Bin
+import random 
 
-def first_fit(
-        bin_capacity: int,
-        item_list: List,
-):
+def first_fit(bin_capacity: int, item_list: List[int]):
     bin_list = []
     for item in item_list:
         inserted = False
@@ -21,10 +19,7 @@ def first_fit(
 
     return bin_list
 
-def first_fit_decreasing(
-        bin_capacity: int,
-        item_list: List,
-):
+def first_fit_decreasing(bin_capacity: int, item_list: List[int]):
     item_list.sort(reverse=True)
 
     return first_fit(bin_capacity, item_list)
@@ -45,6 +40,12 @@ def full_bin_packing(bin_capacity: int, item_list: List[int]):
         item_list = remaining_items
 
     return bin_list
+
+def generate_random_solution(bin_capacity: int, item_list: List[int]):
+    shuffled_items = item_list[:]
+    random.shuffle(shuffled_items)
+
+    return first_fit(bin_capacity, shuffled_items)
 
 def solve_bin_packing(method: str, 
                       bin_capacity: int, 
