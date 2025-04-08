@@ -1,6 +1,7 @@
 from typing import Dict, List, Tuple
 from bin import Bin
 import random 
+import copy
 
 def first_fit(bin_capacity: int, item_list: List[int]):
     bin_list = []
@@ -47,6 +48,33 @@ def generate_random_solution(bin_capacity: int, item_list: List[int]):
 
     return first_fit(bin_capacity, shuffled_items)
 
+def close_neighbor(bin_capacity: int, current_bin_list: List[Bin]):
+    bin_list = copy.deepcopy(current_bin_list)
+    bin_list = [b for b in bin_list if b.item_list]
+
+    if len(bin_list) < 2:
+        return bin_list
+
+    random_bin = random.choice(bin_list)
+    random_item = random.choice(random_bin.item_list)
+    random_bin.item_list.remove(random_item)
+    random_bin.free_bin_capacity += random_item
+
+    if not random_bin.item_list:
+        bin_list.remove(random_bin)
+
+    inserted = False
+    for bin in bin_list:
+        if bin.add_item(random_item):
+            inserted = True
+            break
+    if not inserted:
+        new_bin = Bin(bin_capacity=bin_capacity)
+        new_bin.add_item(random_item)
+        bin_list.append(new_bin)
+
+    return bin_list
+
 def solve_bin_packing(method: str, 
                       bin_capacity: int, 
                       item_list: List) -> list[Bin]:
@@ -60,3 +88,4 @@ def solve_bin_packing(method: str,
         return generate_random_solution(bin_capacity, item_list)
     else:
         raise ValueError(f'Unknown method: {method}')
+    
