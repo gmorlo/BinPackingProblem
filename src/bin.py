@@ -14,3 +14,5 @@ class Bin:
             return True
         return False
 
+    def __repr__(self):
+        return f"Bin(items={self.item_list}, free={self.free_bin_capacity})"
