@@ -21,7 +21,7 @@ def parse_command_line_arguments() -> Dict:
         "--items",
         type=int,
         nargs='+',
-        help="List of item sizes (e.g., 2 5 4 7 1 3 8)"
+        help="List of item sizes (2 5 4 7 1 3 8)"
     )
     group.add_argument(
         "--file",

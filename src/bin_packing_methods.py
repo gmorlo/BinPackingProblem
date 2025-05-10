@@ -2,6 +2,8 @@ from typing import Dict, List, Tuple
 from bin import Bin
 import random 
 import copy
+from objective_evaluate import evaluate_solution
+
 
 def first_fit(bin_capacity: int, item_list: List[int]):
     bin_list = []
@@ -93,3 +95,42 @@ def close_neighbors(bin_capacity: int, item_list: List[int]):
                     all_neighbors.append(temp_bins)
 
     return all_neighbors 
+
+def flatten_bins(bins):
+    return [item for bin in bins for item in bin.item_list]
+
+def serialize_bins(bins):
+    return tuple(sorted(tuple(sorted(bin.item_list)) for bin in bins))
+
+def tabu_search(item_list, bin_capacity, max_iterations, tabu_size=100):
+    current = generate_random_solution(bin_capacity, item_list)
+    global_best = [current]
+    tabu_list = [serialize_bins(current)]
+
+    for i in range(max_iterations):
+        neighbors = []
+        all_neighbors = close_neighbors(bin_capacity, flatten_bins(current))
+
+        for n in all_neighbors:
+            key = serialize_bins(n)
+            if key not in tabu_list:
+                neighbors.append(n)
+
+        if len(neighbors) == 0:
+            break
+
+        best_neighbor = min(neighbors, 
+                            key=evaluate_solution)
+        current = best_neighbor
+
+        tabu_list.append(serialize_bins(current))
+        if len(tabu_list) > tabu_size:
+            tabu_list = tabu_list[-tabu_size:]
+
+        if evaluate_solution(current) < evaluate_solution(global_best[-1]):
+            global_best.append(current)
+
+        if evaluate_solution(current) == 0:
+            return current, i
+
+    return global_best[-1], max_iterations
