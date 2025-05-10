@@ -96,41 +96,44 @@ def close_neighbors(bin_capacity: int, item_list: List[int]):
 
     return all_neighbors 
 
-def flatten_bins(bins):
-    return [item for bin in bins for item in bin.item_list]
-
 def serialize_bins(bins):
-    return tuple(sorted(tuple(sorted(bin.item_list)) for bin in bins))
+    serialized = []
+    for bin in bins:
+        sorted_items = sorted(bin.item_list)
 
-def tabu_search(item_list, bin_capacity, max_iterations, tabu_size=100):
+        bin_tuple = tuple(sorted_items)
+
+        serialized.append(bin_tuple)
+
+    sorted_bins = sorted(serialized)
+
+    return tuple(sorted_bins)
+
+def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
     current = generate_random_solution(bin_capacity, item_list)
-    global_best = [current]
+    global_best = current
     tabu_list = [serialize_bins(current)]
 
     for i in range(max_iterations):
-        neighbors = []
-        all_neighbors = close_neighbors(bin_capacity, flatten_bins(current))
+        neighbors = [n for n in close_neighbors(bin_capacity, item_list)
+                     if serialize_bins(n) not in tabu_list]
 
-        for n in all_neighbors:
-            key = serialize_bins(n)
-            if key not in tabu_list:
-                neighbors.append(n)
-
-        if len(neighbors) == 0:
+        if not neighbors:
             break
 
-        best_neighbor = min(neighbors, 
-                            key=evaluate_solution)
+        best_neighbor = min(neighbors, key=evaluate_solution)
         current = best_neighbor
 
+        # Aktualizacja tabu listy
         tabu_list.append(serialize_bins(current))
-        if len(tabu_list) > tabu_size:
+        if tabu_size is not None and len(tabu_list) > tabu_size:
             tabu_list = tabu_list[-tabu_size:]
 
-        if evaluate_solution(current) < evaluate_solution(global_best[-1]):
-            global_best.append(current)
+        # Aktualizacja najlepszego globalnie
+        if evaluate_solution(current) < evaluate_solution(global_best):
+            global_best = current
 
-        if evaluate_solution(current) == 0:
-            return current, i
+        if evaluate_solution(global_best) == 0:
+            break
 
-    return global_best[-1], max_iterations
+    return global_best

@@ -30,8 +30,9 @@ def solve_bin_packing(method: str,
         return close_random_neighbor(bin_capacity, item_list)
     
     elif method == 'tabu_search':
-        result, iterations = tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=50)
-        print(f"Finished in {iterations} iterations.")
+        max_iterations = int(input("Enter the number of iterations: "))
+        tabu_size = int(input("Enter the size of the tabu list: "))
+        result = tabu_search(item_list, bin_capacity, max_iterations=max_iterations, tabu_size=tabu_size)
         return result
 
     else:
