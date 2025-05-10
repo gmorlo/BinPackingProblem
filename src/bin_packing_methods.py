@@ -159,7 +159,7 @@ def simulated_annealing(item_list, bin_capacity, max_iter, T_func):
             current_score = candidate_score
         else:
             temp = T_func(k)
-            prob = math.exp(-(candidate_score - current_score) / temp)
+            prob = math.exp(-(candidate_score - current_score) / temp)#nie użyłem abs(), bo dobre rozwiązania mogły by zostać sklasyfikowane jako złe
             if random.random() < prob:
                 current = candidate
                 current_score = candidate_score
