@@ -106,7 +106,6 @@ def serialize_bins(bins):
         serialized.append(bin_tuple)
 
     sorted_bins = sorted(serialized)
-
     return tuple(sorted_bins)
 
 def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
@@ -124,12 +123,10 @@ def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
         best_neighbor = min(neighbors, key=evaluate_solution)
         current = best_neighbor
 
-        # Aktualizacja tabu listy
         tabu_list.append(serialize_bins(current))
         if tabu_size is not None and len(tabu_list) > tabu_size:
             tabu_list = tabu_list[-tabu_size:]
 
-        # Aktualizacja najlepszego globalnie
         if evaluate_solution(current) < evaluate_solution(global_best):
             global_best = current
 
