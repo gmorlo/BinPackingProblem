@@ -1,6 +1,7 @@
 from typing import Dict, List, Tuple
 from bin import Bin
 import random 
+import math
 import copy
 from objective_evaluate import evaluate_solution
 
@@ -136,3 +137,37 @@ def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
 
     print(f"tabu_list: {tabu_list}")
     return global_best
+
+def default_temperature(k):
+    return 100 / (k + 1)
+
+def simulated_annealing(item_list, bin_capacity, max_iter, T_func):
+    current = generate_random_solution(bin_capacity, item_list)
+    current_score = evaluate_solution(current)
+
+    best = current
+    best_score = current_score
+
+    history = [current_score]
+
+    for k in range(1, max_iter + 1):
+        candidate = close_random_neighbor(bin_capacity, item_list)
+        candidate_score = evaluate_solution(candidate)
+
+        if candidate_score < current_score:
+            current = candidate
+            current_score = candidate_score
+        else:
+            temp = T_func(k)
+            prob = math.exp(-(candidate_score - current_score) / temp)
+            if random.random() < prob:
+                current = candidate
+                current_score = candidate_score
+
+        if current_score < best_score:
+            best = current
+            best_score = current_score
+
+        history.append(current_score)
+
+    return best, history

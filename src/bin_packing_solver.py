@@ -1,4 +1,4 @@
-from bin_packing_methods import first_fit, first_fit_decreasing, full_bin_packing, generate_random_solution, close_neighbors, close_random_neighbor, tabu_search
+from bin_packing_methods import simulated_annealing, default_temperature, first_fit, first_fit_decreasing, full_bin_packing, generate_random_solution, close_neighbors, close_random_neighbor, tabu_search
 from typing import Dict, List, Tuple
 from objective_evaluate import evaluate_solution
 from plots import plot_bins
@@ -33,6 +33,26 @@ def solve_bin_packing(method: str,
         max_iterations = int(input("Enter the number of iterations: "))
         tabu_size = int(input("Enter the size of the tabu list: "))
         result = tabu_search(item_list, bin_capacity, max_iterations=max_iterations, tabu_size=tabu_size)
+        return result
+
+    elif method == 'simulated_annealing':
+        max_iterations = int(input("Podaj liczbę iteracji: "))
+        result, history = simulated_annealing(
+            item_list, bin_capacity, max_iterations, T_func=default_temperature
+        )
+        print("Najlepszy wynik (score):", evaluate_solution(result))
+        try:
+            import matplotlib.pyplot as plt
+            if method == 'simulated_annealing':
+                plt.plot(history)
+                plt.xlabel("Iteracja")
+                plt.ylabel("Score (evaluate_solution)")
+                plt.title("Zmiana wartości funkcji celu")
+                plt.grid(True)
+                plt.show()
+        except:
+            pass
+
         return result
 
     else:
