@@ -1,7 +1,8 @@
 import argparse
 from typing import Dict, List
 from utils import load_data_from_file
-from objective_evaluate import test_solver
+from bin_packing_solver import test_solver
+from bin import Bin
 
 def parse_command_line_arguments() -> Dict:
     parser = argparse.ArgumentParser(description="Simple CLI for bin packing problem")
@@ -38,6 +39,12 @@ def parse_command_line_arguments() -> Dict:
         action="store_true",
         help="Count full vs. not full bins"
     )
+    parser.add_argument(
+        "--iterations",
+        type=int,
+        default=100,
+        help="Number of iterations (for metaheuristics like tabu_search or simulated_annealing)"
+    )
     args = parser.parse_args()
     return vars(args)
 
@@ -57,7 +64,8 @@ def main():
         bin_capacity=args["bin_capacity"],
         item_list=item_list,
         display_bins_mode=args["display"],
-        count_bins_mode=args["count"]
+        count_bins_mode=args["count"],
+        max_iterations=args["iterations"]
     )
 
 if __name__ == "__main__":

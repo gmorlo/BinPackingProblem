@@ -10,7 +10,9 @@ timer = Timer()
 
 def solve_bin_packing(method: str, 
                       bin_capacity: int, 
-                      item_list: List) -> List[Bin]:
+                      item_list: List,
+                      max_iterations=100) -> List[Bin]:
+                      
     if method == 'first_fit':
         return first_fit(bin_capacity, item_list)
     
@@ -63,6 +65,7 @@ def test_solver(method: str,
                 item_list: List,
                 display_bins_mode: bool = False,
                 count_bins_mode: bool = True,
+                max_iterations=100,
                 visualize: bool = False) -> list[Bin]:
     timer.start()
     bins = solve_bin_packing(method, bin_capacity, item_list)

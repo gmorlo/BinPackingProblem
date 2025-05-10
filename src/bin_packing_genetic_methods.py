@@ -40,3 +40,15 @@ def one_point_crossover(parent1: List[int], parent2: List[int]) -> List[int]:
     head = parent1[:point]
     tail = [item for item in parent2 if item not in head]
     return head + tail
+
+def swap_mutation(individual: List[int]) -> List[int]:
+    mutant = individual[:]
+    i, j = random.sample(range(len(mutant)), 2)
+    mutant[i], mutant[j] = mutant[j], mutant[i]
+    return mutant
+
+def mutation_remove_bit(solution, mutation_rate=0.05) -> List[int]:
+    mutated_solution = [
+        bit for bit in solution if random.random() > mutation_rate
+    ]
+    return mutated_solution
