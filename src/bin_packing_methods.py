@@ -98,11 +98,10 @@ def close_neighbors(bin_capacity: int, item_list: List[int]):
 
 def serialize_bins(bins):
     serialized = []
+
     for bin in bins:
         sorted_items = sorted(bin.item_list)
-
         bin_tuple = tuple(sorted_items)
-
         serialized.append(bin_tuple)
 
     sorted_bins = sorted(serialized)
@@ -114,8 +113,12 @@ def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
     tabu_list = [serialize_bins(current)]
 
     for i in range(max_iterations):
-        neighbors = [n for n in close_neighbors(bin_capacity, item_list)
-                     if serialize_bins(n) not in tabu_list]
+        neighbors = []
+        all_neighbors = close_neighbors(bin_capacity, item_list)
+
+        for n in all_neighbors:
+            if serialize_bins(n) not in tabu_list:
+                neighbors.append(n)
 
         if not neighbors:
             break
@@ -124,13 +127,12 @@ def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
         current = best_neighbor
 
         tabu_list.append(serialize_bins(current))
+
         if tabu_size is not None and len(tabu_list) > tabu_size:
-            tabu_list = tabu_list[-tabu_size:]
+            tabu_list = tabu_list[-tabu_size:]#jak rozmiar tabu_list > tabu_size to usuwamy najstarszy element
 
         if evaluate_solution(current) < evaluate_solution(global_best):
             global_best = current
 
-        if evaluate_solution(global_best) == 0:
-            break
-
+    print(f"tabu_list: {tabu_list}")
     return global_best
