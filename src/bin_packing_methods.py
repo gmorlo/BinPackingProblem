@@ -135,6 +135,8 @@ def tabu_search(item_list, bin_capacity, max_iterations=100, tabu_size=None):
         if evaluate_solution(current) < evaluate_solution(global_best):
             global_best = current
 
+        #dodac returna na evaluation = 1 bin
+
     print(f"tabu_list: {tabu_list}")
     return global_best
 
