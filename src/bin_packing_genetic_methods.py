@@ -18,10 +18,12 @@ def apply_crossover(population, method='one_point'):
     return offspring
 
 def uniform_crossover(parent1: List[int], parent2: List[int]) -> List[int]:
+    # dodaje wybranie po mniejszym parencie, unikanie mutacji usuwających elementy rozwiązuje problem.
+    min_length = min(len(parent1), len(parent2))
     child = []
     used = set()
 
-    for i in range(len(parent1)):
+    for i in range(min_length):
         if random.random() < 0.5 and parent1[i] not in used:
             child.append(parent1[i])
             used.add(parent1[i])
@@ -62,3 +64,4 @@ def mutation_reassign_bin(individual: List[int], max_bin: int) -> List[int]:
         new_bin = random.randint(0, max_bin - 1)
     mutant[index] = new_bin
     return mutant
+    

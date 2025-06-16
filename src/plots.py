@@ -22,3 +22,13 @@ def plot_bins(bins, title):
     ax.set_xlabel("Bin Capacity")
     ax.set_ylabel("Bins")
     plt.show()
+
+def plot_convergence_curve(score_history, title="Convergence Curve"):
+    plt.figure(figsize=(10, 5))
+    plt.plot(score_history, marker='o', linestyle='-', color='blue')
+    plt.xlabel("Iteracja")
+    plt.ylabel("Score")
+    plt.title(title)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
