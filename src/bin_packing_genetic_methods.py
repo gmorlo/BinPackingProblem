@@ -47,8 +47,18 @@ def swap_mutation(individual: List[int]) -> List[int]:
     mutant[i], mutant[j] = mutant[j], mutant[i]
     return mutant
 
-def mutation_remove_bit(solution, mutation_rate=0.05) -> List[int]:
+# Mutacja nie zakceptowana, ponieważ niepotrzebne jest usuwanie bitów z rozwiązania
+def mutation_remove_bit(solution, mutation_rate=0.05) -> List[int]: 
     mutated_solution = [
         bit for bit in solution if random.random() > mutation_rate
     ]
     return mutated_solution
+
+def mutation_reassign_bin(individual: List[int], max_bin: int) -> List[int]:
+    mutant = individual[:]
+    index = random.randint(0, len(mutant) - 1)         # losowy przedmiot
+    new_bin = random.randint(0, max_bin - 1)           # losujemy nowy bin
+    while new_bin == mutant[index]:                    
+        new_bin = random.randint(0, max_bin - 1)
+    mutant[index] = new_bin
+    return mutant
