@@ -100,7 +100,7 @@ flowchart LR
 
 Solutions are scored as:
 
-$$\text{score} = \text{number\_of\_bins} + 0.1 \times \text{total\_free\_space}$$
+$$\text{score} = \text{number of bins} + 0.1 \times \text{total free space}$$
 
 This favors both fewer bins and less wasted capacity.
 
