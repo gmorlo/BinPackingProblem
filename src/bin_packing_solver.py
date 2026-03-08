@@ -5,6 +5,8 @@ from plots import plot_bins
 from timer import Timer
 from utils import count_bins, display_bins
 from bin import Bin
+import matplotlib.pyplot as plt
+
 
 timer = Timer()
 
@@ -44,7 +46,6 @@ def solve_bin_packing(method: str,
         )
         print("Najlepszy wynik (score):", evaluate_solution(result))
         try:
-            import matplotlib.pyplot as plt
             if method == 'simulated_annealing':
                 plt.plot(history)
                 plt.xlabel("Iteracja")
